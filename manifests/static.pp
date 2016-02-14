@@ -15,7 +15,8 @@ class dovecot::static (
   dovecot::config::dovecotcfmulti { 'staticauth':
     config_file => 'conf.d/10-auth.conf',
     changes     => [
-      "set include 'auth-static.conf.ext'",
+      "rm  include[ . = 'auth-static.conf.ext']",
+      "set include[last()+1] 'auth-static.conf.ext'",
     ],
     require     => File["/etc/dovecot/conf.d/auth-static.conf.ext"]
   }
