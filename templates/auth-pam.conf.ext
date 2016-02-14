@@ -1,0 +1,20 @@
+# THIS FILE IS MANAGED BY PUPPET. CHANGES MADE TO THIS FILE WILL PROBABLY BE LOST.
+# Authentication for pam users. Included from auth.conf.
+#
+# pam file with specified location.
+# <http://wiki.dovecot.org/PasswordDatabase/PAM>
+
+passdb {
+  driver = pam
+<% if @service_name != nil || @session != nil || @setcred != nil || @max_requests != nil || @failure_show_msg != nil || @cache_key != nil -%>
+  args = <%- if @service_name != nil %>service_name=<%= @service_name %> <% end -%>
+         <%- if @session != nil %>session=<%= @session %> <% end -%>
+         <%- if @setcred != nil %>setcred=<%= @setcred %> <% end -%>
+         <%- if @max_requests != nil %>max_requests=<%= @max_requests %> <% end -%>
+         <%- if @failure_show_msg != nil %>failure_show_msg=<%= @failure_show_msg %> <% end -%>
+         <%- if @cache_key != nil %>cache_key=<%= @cache_key %> <% end -%>
+<% end %>
+<% if @allow_nets.is_a?(Array) && !@allow_nets.empty? -%>
+  override_fields = allow_nets=<%= @allow_nets.join(",") -%>
+<%- end %>
+}
