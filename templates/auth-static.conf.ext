@@ -1,0 +1,12 @@
+# THIS FILE IS MANAGED BY PUPPET. CHANGES MADE TO THIS FILE WILL PROBABLY BE LOST.
+# Authentication for static users. Included from auth.conf.
+#
+# <http://wiki.dovecot.org/UserDatabase/Static>
+
+userdb {
+  driver = static
+  args = uid=<%= @uid %> gid=<%= @gid %> home=<%= @home -%>
+<% if @allow_all_users != nil -%>
+ allow_all_users=<%= @allow_all_users -%>
+<% end %>
+}
