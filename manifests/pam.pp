@@ -18,7 +18,8 @@ class dovecot::pam (
   dovecot::config::dovecotcfmulti { 'pamauth':
     config_file => 'conf.d/10-auth.conf',
     changes     => [
-      "set include 'auth-pam.conf.ext'",
+      "rm  include[ . = 'auth-pam.conf.ext']",
+      "set include[last()+1] 'auth-pam.conf.ext'",
       "rm  include[ . = 'auth-system.conf.ext']",
     ],
     require     => File["/etc/dovecot/conf.d/auth-pam.conf.ext"]
