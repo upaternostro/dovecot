@@ -3,17 +3,24 @@ class dovecot::auth (
   $disable_plaintext_auth = 'no',
   $auth_mechanisms        = 'plain login',
   $auth_username_format   = '%Ln',
-  $auth_default_realm     = $::fqdn,
+  $auth_default_realm     = undef,
 ) {
   include dovecot
 
+  $changes = [
+    "set disable_plaintext_auth '${disable_plaintext_auth}'",
+    "set auth_mechanisms '${auth_mechanisms}'",
+    "set auth_username_format '${auth_username_format}'",
+  ]
+
+  if $auth_default_realm != undef {
+    $changes[3] = "set auth_default_realm '${auth_default_realm}'"
+  } else {
+    $changes[3] = "rm auth_default_realm"
+  }
+
   dovecot::config::dovecotcfmulti { 'auth':
     config_file => 'conf.d/10-auth.conf',
-    changes     => [
-      "set disable_plaintext_auth '${disable_plaintext_auth}'",
-      "set auth_mechanisms '${auth_mechanisms}'",
-      "set auth_username_format '${auth_username_format}'",
-      "set auth_default_realm '${auth_default_realm}'"
-    ],
+    changes     => $changes,
   }
 }
