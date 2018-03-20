@@ -14,9 +14,9 @@ class dovecot::auth (
   ]
 
   if $auth_default_realm != undef {
-    $changes[3] = "set auth_default_realm '${auth_default_realm}'"
+    $changes = concat($changes, "set auth_default_realm '${auth_default_realm}'")
   } else {
-    $changes[3] = "rm auth_default_realm"
+    $changes = concat($changes, "rm auth_default_realm")
   }
 
   dovecot::config::dovecotcfmulti { 'auth':
